@@ -12,7 +12,7 @@ $app = new \Slim\Slim([]);
 $app->get('/app/auth', function() use ($app) {
     $config = new Models\OAuthConfig();
 
-    $responseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/app/oauth2callback';
+    $responseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/app/callback';
 
     $url = $config->getAuthUri() . '?' .
         'response_type=code&' .
@@ -38,7 +38,7 @@ $app->get('/app/oauth2callback', function() use ($app) {
             'grant_type' => 'authorization_code',
             'client_id' => $config->getClientId(),
             'client_secret' => $config->getClientSecret(),
-            'redirect_uri' => 'https://' . $_SERVER['HTTP_HOST'] . '/app/oauth2callback'
+            'redirect_uri' => 'https://' . $_SERVER['HTTP_HOST'] . '/app/callback'
         ];
 
         $response = $client->post($config->getTokenUri(), [
