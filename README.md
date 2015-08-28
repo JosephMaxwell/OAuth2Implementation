@@ -31,5 +31,5 @@ However, my goal was to decipher it for myself and present it to the local KC PH
     * Add a authorized redirect URI (exactly https://[domain_name]/app/callback).
     * Click create
     * Save client ID and client secret.
-  * Next to the client ID just created, click the download arrow and save file as client_secrets.json in project folder (next to `index.php`).
+  * Next to the client ID just created, click the download arrow and save file as `client_secrets.json` in project folder (next to `index.php`).
   * Change the token URI element to be: "https://www.googleapis.com/oauth2/v3/token"
