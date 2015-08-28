@@ -12,40 +12,32 @@ $app = new \Slim\Slim([]);
 $app->get('/app/auth', function() use ($app) {
     $config = new Models\OAuthConfig();
 
-    $responseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/app/oauth2callback';
+    $responseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/app/callback';
 
-    $url = $config->getAuthUri() . '?' .
-        'response_type=code&' .
-        'redirect_uri=' . urlencode($responseUrl) . '&' .
-        'approval_prompt=force' .
-        '&scope=' . urlencode(Helpers\App::SCOPE) . '&' .
-        'client_id=' . urlencode($config->getClientId()) . '&' .
-        'access_type=online&' .
-        'include_granted_scopes=true';
+    /**
+     * url: client_secrets.json: auth_uri
+     * url parameters: response_type, redirect_uri, approval_prompt=force, scope,
+     *                 access_type=online
+     */
+
+    $url = '';
 
     $app->redirect($url);
 });
 
 
 
-$app->get('/app/oauth2callback', function() use ($app) {
+$app->get('/app/callback', function() use ($app) {
     if ($code = $app->request->params('code')) {
         $config = new \Models\OAuthConfig();
         $client = new \GuzzleHttp\Client();
 
-        $params = [
-            'code' => $code,
-            'grant_type' => 'authorization_code',
-            'client_id' => $config->getClientId(),
-            'client_secret' => $config->getClientSecret(),
-            'redirect_uri' => 'https://' . $_SERVER['HTTP_HOST'] . '/app/oauth2callback'
-        ];
-
-        $response = $client->post($config->getTokenUri(), [
-            'form_params' => $params
-        ]);
-
-        $json = json_decode($response->getBody(), true);
+        /*
+         * Access token exchange:
+         * url: posted to client_secrets.json: token_uri
+         * url parameters: code, grant_type=authorization_code, client_id, client_secret, redirect_uri
+         */
+        $json = array();
 
         Helpers\App::setAccessToken($json);
 
