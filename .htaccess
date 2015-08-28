@@ -1,0 +1,8 @@
+Options +FollowSymlinks
+RewriteEngine on
+RewriteRule .* index.php [NC]
+
+<Files "client_secrets.json">
+Order Allow,Deny
+Deny from all
+</Files>

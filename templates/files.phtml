@@ -1,0 +1,11 @@
+<h1>Files: (<a href="/app/logout">Logout</a>)</h1>
+
+
+<dl>
+<?php foreach ($files as $file):?>
+
+    <dt><?php echo $file['title'];?></dt>
+    <dd><?php echo $file['owner']['displayName'];?></dd>
+
+<?php endforeach; ?>
+</dl>

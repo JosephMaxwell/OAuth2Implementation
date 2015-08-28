@@ -1,0 +1,9 @@
+#OAuth Tutorial
+
+For me, OAuth used to be a bad word. It seemed to be this giant monster that was to be avoided at all costs. It just didn't make any sense.
+
+However, my goal was to decipher it for myself and present it to the local KC PHP user group. This is that project.
+
+Simply check it out (`git clone https://github.com/JosephMaxwell/OAuth2Implementation.git`), fire up vagrant or MAMP or WAMP, and get coding!
+
+To follow along, enter `git checkout tutorial`. This will give you a shell so you can enter as we go.

@@ -1,0 +1,5 @@
+/oauth2.implementation.crt
+/oauth2.implementation.key
+/vendor
+client_secrets.json
+composer.lock

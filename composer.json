@@ -1,0 +1,8 @@
+{
+    "require": {
+        "adoy/oauth2": "^1.3",
+        "slim/slim": "^2.6",
+        "symfony/yaml": "^2.7",
+        "guzzlehttp/guzzle": "^6.0"
+    }
+}
