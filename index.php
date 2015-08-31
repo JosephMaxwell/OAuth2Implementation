@@ -28,7 +28,7 @@ $app->get('/app/auth', function() use ($app) {
 
 
 
-$app->get('/app/oauth2callback', function() use ($app) {
+$app->get('/app/callback', function() use ($app) {
     if ($code = $app->request->params('code')) {
         $config = new \Models\OAuthConfig();
         $client = new \GuzzleHttp\Client();
