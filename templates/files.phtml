@@ -1,11 +1,17 @@
 <h1>Files: (<a href="/app/logout">Logout</a>)</h1>
 
 
+<style>
+    dt { font-weight: bold; padding-left: 20px; }
+    dd { padding-bottom: 20px; }
+    img { vertical-align: middle }
+</style>
+
 <dl>
 <?php foreach ($files as $file):?>
 
-    <dt><?php echo $file['title'];?></dt>
-    <dd><?php echo $file['owner']['displayName'];?></dd>
+    <dt><img src="<?php echo $file['iconLink']; ?>" alt="File Icon" /> <?php echo $file['title'];?></dt>
+    <dd>Owner: <?php echo $file['owner']['displayName'];?></dd>
 
 <?php endforeach; ?>
 </dl>
