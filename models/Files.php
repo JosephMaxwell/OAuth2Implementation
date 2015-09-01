@@ -20,7 +20,8 @@ class Files
             foreach ($data['items'] as $item) {
                 $details = [
                     'title' => $item['title'],
-                    'owner' => array_shift($item['owners'])
+                    'owner' => array_shift($item['owners']),
+                    'iconLink' => $item['iconLink'],
                 ];
 
                 $output[] = $details;
