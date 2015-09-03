@@ -8,6 +8,10 @@ require 'helpers/App.php';
 
 $app = new \Slim\Slim([]);
 
+$app->get('/', function() use ($app) {
+    echo "Hello there";
+});
+
 
 $app->get('/app/auth', function() use ($app) {
     $config = new Models\OAuthConfig();
