@@ -37,3 +37,10 @@ However, my goal was to decipher it for myself and present it to the local KC PH
 6. Open `https://[domain_name]/app` to ensure everything works.
   * Go back to terminal and type `git checkout tutorial`
 
+
+--------
+
+### Installing Homestead
+
+1. `composer require laravel/homestead`
+2. `vagrant up`
