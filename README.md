@@ -9,7 +9,8 @@ However, my goal was to decipher it for myself and present it to the local KC PH
 * Go to your terminal and `cd` to where you would like this project to reside.
 * Type `git clone https://github.com/JosephMaxwell/OAuth2Implementation.git` + Enter
 * Type `cd OAuth2Implementation` + Enter
-* Setup a MAMP or Vagrant box. **It needs to have a `https` address.**
+* Run `vagrant up` in the project directory
+* Access `http://oauth.app/`
 
 ##Using Google API Console
 
@@ -36,4 +37,3 @@ However, my goal was to decipher it for myself and present it to the local KC PH
   * Open `client_secrets.json` and change the token URI element to be: "https://www.googleapis.com/oauth2/v3/token"
 6. Open `https://[domain_name]/app` to ensure everything works.
   * Go back to terminal and type `git checkout tutorial`
-

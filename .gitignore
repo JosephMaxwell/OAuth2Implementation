@@ -3,3 +3,6 @@
 /vendor
 client_secrets.json
 composer.lock
+oauth.dev.crt
+oauth.dev.key
+.vagrant
