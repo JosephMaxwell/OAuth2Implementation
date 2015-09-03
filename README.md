@@ -10,6 +10,7 @@ However, my goal was to decipher it for myself and present it to the local KC PH
 * Type `git clone https://github.com/JosephMaxwell/OAuth2Implementation.git` + Enter
 * Type `cd OAuth2Implementation` + Enter
 * Run `vagrant up` in the project directory
+* Access `http://oauth.app/`
 
 ##Using Google API Console
 
