@@ -43,36 +43,6 @@ class App
             'Referer' => $this->getUrl()
         ];
     }
-    
-    public function convertToAccessToken($code, $area)
-    {
-        if (!$code) {
-            throw new \Exception('No access code provided.');
-        }
-
-        $client = new Client;
-
-        $params = [
-            'code'          => $code,
-            'grant_type'    => 'authorization_code',
-            'client_id'     => $this->config->getClientId(),
-            'client_secret' => $this->config->getClientSecret(),
-            'redirect_uri'  => $this->getCallbackUrl($area)
-        ];
-
-        $response = $client->post($this->config->getTokenUri(), [
-            'form_params' => $params
-        ]);
-
-        $json = json_decode($response->getBody(), true);
-        $this->setAccessToken($json);
-        
-        if (!isset($json['access_token'])) {
-            throw new \Exception("Access token not returned.");
-        }
-        
-        return true;
-    }
   
     public function getCallbackUrl($area)
     {
