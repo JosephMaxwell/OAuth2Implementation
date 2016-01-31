@@ -1,0 +1,27 @@
+---
+ip: "192.168.10.21"
+memory: 2048
+cpus: 1
+hostname: oauth2implementation
+name: oauth2implementation
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: "./"
+      to: "/home/vagrant/oauth2implementation"
+
+sites:
+    - map: oauth.app
+      to: "/home/vagrant/oauth2implementation"
+
+databases:
+    - homestead
+
+variables:
+    - key: APP_ENV
+      value: local
