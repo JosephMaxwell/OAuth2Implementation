@@ -1,19 +1,90 @@
 <?php
 namespace Helpers;
 
-use Models\Files;
+use GuzzleHttp\Client;
+use Models\Config;
+use Slim\Http\Response;
+use Slim\Http\Request;
+use Slim\Container;
+use Slim\Http\Cookies;
 
 class App
 {
-    const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
     const COOKIE = 'auth';
+
+    /** @var Config $this->config */
+    protected $config;
+
+    /** @var Request $this->request */
+    protected $request;
+
+    /** @var Response $this->response */
+    protected $response;
+
+    /** @var Cookies */
+    protected $cookie;
+
+    public function __construct(Container $container)
+    {
+        $this->request = $container->request;
+        $this->config = $container->config;
+    }
+
+    public function getAuthorizedHeaders()
+    {
+        $cookie = $this->getCookie();
+        
+        if (!isset($cookie['access_token'])) {
+            throw new \Exception("Not authorized!");
+        }
+        
+        return [
+            'Authorization' => 'Bearer ' . $cookie['access_token'],
+            'Referer' => $this->getUrl()
+        ];
+    }
+    
+    public function convertToAccessToken($code, $area)
+    {
+        if (!$code) {
+            throw new \Exception('No access code provided.');
+        }
+
+        $client = new Client;
+
+        $params = [
+            'code'          => $code,
+            'grant_type'    => 'authorization_code',
+            'client_id'     => $this->config->getClientId(),
+            'client_secret' => $this->config->getClientSecret(),
+            'redirect_uri'  => $this->getCallbackUrl($area)
+        ];
+
+        $response = $client->post($this->config->getTokenUri(), [
+            'form_params' => $params
+        ]);
+
+        $json = json_decode($response->getBody(), true);
+        $this->setAccessToken($json);
+        
+        if (!isset($json['access_token'])) {
+            throw new \Exception("Access token not returned.");
+        }
+        
+        return true;
+    }
+  
+    public function getCallbackUrl($area)
+    {
+        return $this->getUrl() . $area . '/callback';
+    }
 
     /**
      * Determines the current host of the application
      *
      * @return string
      */
-    public static function getUrl()
+    public function getUrl()
     {
         $path = [];
 
@@ -33,19 +104,19 @@ class App
      *
      * @return array
      */
-    public static function getCookie()
+    public function getCookie()
     {
-        $app = \Slim\Slim::getInstance();
+        $cookies = $this->request->getCookieParams();
 
-        if ($cookie = $app->getCookie(self::COOKIE)) {
-            $json = json_decode($cookie, true);
+        if (isset($cookies[self::COOKIE])) {
+            $json = json_decode($cookies[self::COOKIE], true);
 
             if (is_array($json)) {
                 return $json;
             }
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -53,32 +124,27 @@ class App
      *
      * @return string
      */
-    public static function getAccessToken()
+    public function getAccessToken()
     {
-        $cookie = self::getCookie();
+        $cookie = $this->getCookie();
+        return $cookie['access_token'] ?? '';
+    }
 
-        if (isset($cookie['access_token'])) {
-            return $cookie['access_token'];
-        } else {
-            return '';
-        }
+    public function unsetAccessToken()
+    {
+        setcookie(self::COOKIE, null);
+
+        return $this;
     }
 
     /**
      * Determines whether the user is authorized to access application
      */
-    public static function isAuthorized()
+    public function hasAccessToken()
     {
-        $cookie = self::getCookie();
+        $cookie = $this->getCookie();
 
-        if (!isset($cookie['expires']) || $cookie['expires'] <= time() || !isset($cookie['access_token'])) {
-            $app = \Slim\Slim::getInstance();
-            $app->redirect('/app/auth');
-
-            return false;
-        }
-
-        return true;
+        return isset($cookie['expires']) && $cookie['expires'] >= time() && isset($cookie['access_token']);
     }
 
     /**
@@ -87,15 +153,13 @@ class App
      * @param array $json
      * @return bool
      */
-    public static function setAccessToken(array $json)
+    public function setAccessToken(array $json)
     {
-        $app = \Slim\Slim::getInstance();
-
         if (isset($json['access_token']) && isset($json['expires_in'])) {
             $json['expires'] = $json['expires_in'] + time();
         }
 
-        $app->setCookie(self::COOKIE, json_encode($json));
+        setcookie(self::COOKIE, json_encode($json));
 
         return true;
     }

@@ -2,13 +2,15 @@
 
 namespace Models;
 
-class OAuthConfig
+class Config
 {
     protected $loaded = false;
     protected $data = array();
 
     const CONTEXT = 'web';
     const CLIENT_SECRETS_FILE = 'client_secrets.json';
+    const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
+
 
     protected function getData()
     {

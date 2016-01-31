@@ -1,0 +1,17 @@
+<h1>Files: (<a href="/{{ area }}/logout">Logout</a>)</h1>
+
+
+<style>
+    dt { font-weight: bold; padding-left: 20px; }
+    dd { padding-bottom: 20px; }
+    img { vertical-align: middle }
+</style>
+
+<dl>
+{% for file in files %}
+
+    <dt><img src="{{  file.iconLink }}" alt="File Icon" />{{  file.title  }}</dt>
+    <dd>Owner: {{ file.owner.displayName }}</dd>
+
+{% endfor %}
+</dl>
